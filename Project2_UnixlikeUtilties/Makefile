@@ -2,18 +2,24 @@
 
 CC = gcc
 CFLAGS = -Wall
-TARGET = custom_ls
+TARGETS = custom_ls custom_wc custom_cp
 INSTALL_DIR = /usr/local/bin
 
-# Rule to build the custom_ls program
-$(TARGET): custom_ls.c
-	$(CC) $(CFLAGS) -o $(TARGET) custom_ls.c 
+all: $(TARGETS)
+
+custom_ls: custom_ls.c
+	$(CC) $(CFLAGS) -o custom_ls custom_ls.c 
+
+custom_wc: custom_wc.c
+	$(CC) $(CFLAGS) -o custom_wc custom_wc.c
+
+custom_cp: custom_cp.c
+	$(CC) $(CFLAGS) -o custom_cp custom_cp.c
 
 # Rule to install the custom_ls program to /usr/local/bin
-install: $(TARGET)
-	sudo cp $(TARGET) $(INSTALL_DIR)
+install: $(TARGETS)
+	sudo cp $(TARGETS) $(INSTALL_DIR)
 
 # Rule to clean up compiled files
 clean:
-	rm -rf ./custom_ls
-	rm -f $(TARGET)
+	rm -f $(TARGETS)
