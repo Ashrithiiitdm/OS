@@ -2,7 +2,7 @@
 
 CC = gcc
 CFLAGS = -Wall
-TARGETS = custom_ls custom_wc custom_cp
+TARGETS = custom_ls custom_wc custom_cp custom_rm
 INSTALL_DIR = /usr/local/bin
 
 all: $(TARGETS)
@@ -15,6 +15,9 @@ custom_wc: custom_wc.c
 
 custom_cp: custom_cp.c
 	$(CC) $(CFLAGS) -o custom_cp custom_cp.c
+
+custom_rm: custom_rm.c
+	$(CC) $(CFLAGS) -o custom_rm custom_rm.c
 
 # Rule to install the custom_ls program to /usr/local/bin
 install: $(TARGETS)
