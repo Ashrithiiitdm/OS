@@ -129,25 +129,28 @@ int get_process_type(void){
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
     //Find the pid
     if(p->pid == pid){
-      int type;
+      //int type;
       if(p->parent == 0){
-        type = 3;
+        release(&ptable.lock);
+        return 3;
       }
 
       else if(p->state == ZOMBIE){
-        type = 0;
+        release(&ptable.lock);
+        return 1;
       }
 
       else if(p->parent->state == ZOMBIE){
-        type = 1;
+        release(&ptable.lock);
+        return 0;
       }
 
       else{
-        type = 2;
+        release(&ptable.lock);
+        return 2;
       }
       //Release the lock before returning the state.
-      release(&ptable.lock);
-      return type;
+  
     }
   }
   release(&ptable.lock);
