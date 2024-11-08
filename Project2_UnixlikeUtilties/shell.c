@@ -28,9 +28,9 @@ void execute_command(char *command) {
 
     if(status==-1){
         perror("Error in the system");
-    }else{
-        printf("Command executed successfully\n");
-    }
+    }//else{
+    //     printf("Command executed successfully\n");
+    // }
 
    // This is a placeholder implementation.
 //    printf("Executing: %s\n", command);
