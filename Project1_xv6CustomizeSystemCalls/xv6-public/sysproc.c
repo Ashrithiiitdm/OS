@@ -6,6 +6,7 @@
 #include "memlayout.h"
 #include "mmu.h"
 #include "proc.h"
+#include "spinlock.h"
 
 int total_calls = -1;
 
@@ -103,4 +104,52 @@ int sys_calls(void){
   else{
     return total_calls + 1;
   }
+}
+
+extern struct{
+  //Lock for synchronization acess to ptable.
+  struct spinlock lock;
+
+  //Array of process structures.
+  struct proc proc[NPROC];
+}ptable;
+
+int get_process_type(void){
+  int pid;
+  struct proc *p;
+
+  //Gets the argument from system call stack  and stores it in pid.
+  if(argint(0, &pid) < 0){
+    return -1;
+  }
+  
+  //Acquire a lock to the process table
+  acquire(&ptable.lock);
+
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+    //Find the pid
+    if(p->pid == pid){
+      int type;
+      if(p->parent == 0){
+        type = 3;
+      }
+
+      else if(p->state == ZOMBIE){
+        type = 0;
+      }
+
+      else if(p->parent->state == ZOMBIE){
+        type = 1;
+      }
+
+      else{
+        type = 2;
+      }
+      //Release the lock before returning the state.
+      release(&ptable.lock);
+      return type;
+    }
+  }
+  release(&ptable.lock);
+  return -1;
 }

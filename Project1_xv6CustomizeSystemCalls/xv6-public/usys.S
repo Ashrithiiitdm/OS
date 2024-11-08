@@ -31,4 +31,4 @@ SYSCALL(sleep)
 SYSCALL(uptime)
 SYSCALL(cps)
 SYSCALL(calls)
-
+SYSCALL(get_process_type)

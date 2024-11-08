@@ -106,6 +106,7 @@ extern int sys_uptime(void);
 extern int sys_cps(void);
 extern int sys_calls(void);
 extern int total_calls;
+extern int sys_getproc(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -131,6 +132,7 @@ static int (*syscalls[])(void) = {
 [SYS_close]   sys_close,
 [SYS_cps]     sys_cps,
 [SYS_calls]   sys_calls,
+[SYS_get_process_type] get_process_type
 };
 
 void

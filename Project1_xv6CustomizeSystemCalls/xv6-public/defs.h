@@ -122,6 +122,7 @@ void            wakeup(void*);
 void            yield(void);
 int 		cps(void);
 int        calls(void);
+int         get_process_type(void);
 
 // swtch.S
 void            swtch(struct context**, struct context*);
