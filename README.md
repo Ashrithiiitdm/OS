@@ -1,1 +1,1 @@
-# This repository caontains the codes for our Operating Systems project
+# This repository contains the codes for our Operating Systems project
