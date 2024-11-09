@@ -109,3 +109,11 @@ int sys_calls(void){
 int sys_get_process_type(void){
   return get_process_type();
 }
+
+int sys_wait_pid(void){
+  return wait_pid();
+}
+
+int sys_unwait_pid(void){
+  return unwait_pid();
+}

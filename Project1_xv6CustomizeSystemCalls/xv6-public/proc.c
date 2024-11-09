@@ -73,47 +73,53 @@ myproc(void) {
 static struct proc*
 allocproc(void)
 {
-  struct proc *p;
-  char *sp;
+    struct proc *p;
+    char *sp;
 
-  acquire(&ptable.lock);
+    acquire(&ptable.lock);
 
-  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++)
-    if(p->state == UNUSED)
-      goto found;
+    // Loop to find an UNUSED process slot.
+    for (p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
+        if (p->state == UNUSED) {
+          // Initialize the waiting_for field
+            p->waiting_for = -1;
+            goto found;
+        }
+    }
 
-  release(&ptable.lock);
-  return 0;
+    release(&ptable.lock);
+    return 0;
 
 found:
-  p->state = EMBRYO;
-  p->pid = nextpid++;
+    p->state = EMBRYO;
+    p->pid = nextpid++;
 
-  release(&ptable.lock);
+    release(&ptable.lock);
 
-  // Allocate kernel stack.
-  if((p->kstack = kalloc()) == 0){
-    p->state = UNUSED;
-    return 0;
-  }
-  sp = p->kstack + KSTACKSIZE;
+    // Allocate kernel stack.
+    if ((p->kstack = kalloc()) == 0) {
+        p->state = UNUSED;
+        return 0;
+    }
+    sp = p->kstack + KSTACKSIZE;
 
-  // Leave room for trap frame.
-  sp -= sizeof *p->tf;
-  p->tf = (struct trapframe*)sp;
+    // Leave room for trap frame.
+    sp -= sizeof *p->tf;
+    p->tf = (struct trapframe*)sp;
 
-  // Set up new context to start executing at forkret,
-  // which returns to trapret.
-  sp -= 4;
-  *(uint*)sp = (uint)trapret;
+    // Set up new context to start executing at forkret,
+    // which returns to trapret.
+    sp -= 4;
+    *(uint*)sp = (uint)trapret;
 
-  sp -= sizeof *p->context;
-  p->context = (struct context*)sp;
-  memset(p->context, 0, sizeof *p->context);
-  p->context->eip = (uint)forkret;
+    sp -= sizeof *p->context;
+    p->context = (struct context*)sp;
+    memset(p->context, 0, sizeof *p->context);
+    p->context->eip = (uint)forkret;
 
-  return p;
+    return p;
 }
+
 
 //PAGEBREAK: 32
 // Set up first user process.
@@ -613,3 +619,93 @@ int get_process_type(void){
 
 }
 
+int
+wait_pid(void)
+{
+    int pid;
+    struct proc *p;
+    struct proc *currproc = myproc();
+    
+    if (argint(0, &pid) < 0) {
+        return -1;
+    }
+    
+    acquire(&ptable.lock);
+    cprintf("wait_pid: Acquired ptable.lock for pid %d\n", pid);
+    
+    // Find process with the specified PID
+    for (p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
+        if (p->pid == pid) {
+            break;
+        }
+    }
+    
+    // Validate target process
+    if (p >= &ptable.proc[NPROC] || p == currproc || p->state == UNUSED) {
+        release(&ptable.lock);
+        cprintf("wait_pid: Invalid target process %d\n", pid);
+        return -1;
+    }
+    
+    // Parent process is waiting for the child
+    currproc->waiting_for = pid;
+    currproc->wait_state = 1;
+    cprintf("wait_pid: Process %d waiting for pid %d\n", currproc->pid, pid);
+    
+    // Sleep until the target process finishes or is unwaited
+    while (currproc->wait_state == 1) {
+        cprintf("wait_pid: Process %d is sleeping\n", currproc->pid);
+        sleep(currproc, &ptable.lock);
+    }
+    
+    // Check if the wait was interrupted
+    if (currproc->wait_state == 2) {
+        cprintf("wait_pid: Wait interrupted for process %d\n", currproc->pid);
+        currproc->waiting_for = -1;
+        currproc->wait_state = 0;
+        release(&ptable.lock);
+        return -1;
+    }
+    
+    currproc->waiting_for = -1;
+    currproc->wait_state = 0;
+    release(&ptable.lock);
+    return 0;
+}
+
+int
+unwait_pid(void)
+{
+    int pid;
+    struct proc *p;
+    struct proc *currproc = myproc();
+    int woken = 0;
+    
+    if (argint(0, &pid) < 0) {
+        return -1;
+    }
+    
+    acquire(&ptable.lock);
+    cprintf("unwait_pid: Process %d releasing waiters\n", currproc->pid);
+    
+    // Wake up the processes waiting for the current process (currproc)
+    for (p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
+        //cprintf("unwait_pid: Checking process %d, waiting_for: %d, currproc pid: %d\n", 
+          //      p->pid, p->waiting_for, currproc->pid);
+        
+        if (p->state == SLEEPING && 
+            p->waiting_for == currproc->pid && 
+            (pid == -1 || p->pid == pid)) {
+            
+            p->wait_state = 0;
+            p->waiting_for = -1;
+            wakeup(p);  // Wake up the parent process
+            woken++;
+            cprintf("unwait_pid: Woke up process %d\n", p->pid);
+        }
+    }
+    
+    release(&ptable.lock);
+    cprintf("unwait_pid: Released %d waiting processes\n", woken);
+    return woken;
+}

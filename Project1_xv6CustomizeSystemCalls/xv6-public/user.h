@@ -1,3 +1,4 @@
+#include "types.h"
 struct stat;
 struct rtcdate;
 
@@ -26,6 +27,8 @@ int uptime(void);
 int cps(void);
 int calls(void);
 int get_process_type(int);
+int wait_pid(int);
+int unwait_pid(void);
 
 // ulib.c
 int stat(const char*, struct stat*);

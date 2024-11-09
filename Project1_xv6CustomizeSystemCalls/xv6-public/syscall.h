@@ -23,3 +23,5 @@
 #define SYS_cps	   22
 #define SYS_calls  23
 #define SYS_get_process_type 24
+#define SYS_wait_pid 25
+#define SYS_unwait_pid 26

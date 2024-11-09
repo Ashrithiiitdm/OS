@@ -107,6 +107,8 @@ extern int sys_cps(void);
 extern int sys_calls(void);
 extern int total_calls;
 extern int sys_get_process_type(void);
+extern int sys_wait_pid(void);
+extern int sys_unwait_pid(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -132,7 +134,9 @@ static int (*syscalls[])(void) = {
 [SYS_close]   sys_close,
 [SYS_cps]     sys_cps,
 [SYS_calls]   sys_calls,
-[SYS_get_process_type] sys_get_process_type
+[SYS_get_process_type] sys_get_process_type,
+[SYS_wait_pid] sys_wait_pid,
+[SYS_unwait_pid] sys_unwait_pid,
 };
 
 void
