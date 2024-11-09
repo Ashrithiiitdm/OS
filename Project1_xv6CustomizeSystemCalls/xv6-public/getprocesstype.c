@@ -4,7 +4,10 @@
 #include "fcntl.h"
 
 int main(int argc, char *argv[]){
-	int type = get_process_type();
+	
+	int pid = atoi(argv[1]);
+	int type = get_process_type(pid);
+
 	if(type == -1){
 		printf(1, "Error: Invalid PID\n");
 		exit();

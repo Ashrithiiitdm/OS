@@ -25,7 +25,7 @@ int sleep(int);
 int uptime(void);
 int cps(void);
 int calls(void);
-int get_process_type(void);
+int get_process_type(int);
 
 // ulib.c
 int stat(const char*, struct stat*);
