@@ -212,7 +212,7 @@ print: xv6.pdf
 # run in emulators
 
 bochs : fs.img xv6.img
-	if [ ! -e .bochsrc ]; then ln -s dot-bochsrc .bochsrc; fi
+	if [ ! -e .bochsgetprocesstyperc ]; then ln -s dot-bochsrc .bochsrc; fi
 	bochs -q
 
 # try to generate a unique GDB port

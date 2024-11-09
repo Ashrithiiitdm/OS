@@ -118,41 +118,52 @@ int get_process_type(void){
   int pid;
   struct proc *p;
 
-  //Gets the argument from system call stack  and stores it in pid.
+  //Get the pid (given as argument) from argint.
   if(argint(0, &pid) < 0){
     return -1;
   }
-  
-  //Acquire a lock to the process table
+
+  if(pid == 1){
+    //init process
+    return 3;
+  }
+
+  //Acquire the lock for synchronization.
   acquire(&ptable.lock);
 
+  //Going throught the process table for finding the process with the given pid.
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-    //Find the pid
     if(p->pid == pid){
-      //int type;
-      if(p->parent == 0){
-        release(&ptable.lock);
-        return 3;
-      }
 
-      else if(p->state == ZOMBIE){
+      //Checking whether the process is a zombie process or not.
+      if(p->state == ZOMBIE){
+        cprintf("Process type: %s\n", p->state);
+        //release the lock before returning.
         release(&ptable.lock);
         return 1;
       }
 
-      else if(p->parent->state == ZOMBIE){
+      //Checking whether the process is orphan or not.
+      else if(p->parent && p->parent->pid == 1 && p->state != ZOMBIE){
+        cprintf("Process type: %s\n", p->state);
+        //As init processes adopt orphan processes.
         release(&ptable.lock);
         return 0;
       }
 
       else{
+        cprintf("Process type: %s\n", p->state);
+        //Else it is a normal process.
         release(&ptable.lock);
         return 2;
       }
-      //Release the lock before returning the state.
-  
+      
     }
+    
   }
+
+  //If no such process exists return -1
   release(&ptable.lock);
   return -1;
+
 }

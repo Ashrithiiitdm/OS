@@ -9,6 +9,19 @@ int main(int argc, char *argv[]){
 		printf(1, "Error: Invalid PID\n");
 		exit();
 	}
-    printf(1, "Process type: %d\n", type);
+    
+	if(type == 3){
+		printf(1, "Process type: init\n");
+	}
+	else if(type == 1){
+		printf(1, "Process type: zombie\n");
+	}
+	else if(type == 0){
+		printf(1, "Process type: orphan\n");
+	}
+	else if(type == 2){
+		printf(1, "Process type: general\n");
+	}
+
 	exit();
 }
