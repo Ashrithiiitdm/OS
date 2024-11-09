@@ -25,3 +25,4 @@
 #define SYS_get_process_type 24
 #define SYS_wait_pid 25
 #define SYS_unwait_pid 26
+#define SYS_mem_usage 27

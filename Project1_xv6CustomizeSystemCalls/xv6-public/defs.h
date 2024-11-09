@@ -125,6 +125,7 @@ int        calls(void);
 int         get_process_type(void);
 int         wait_pid(void);
 int         unwait_pid(void);
+int        mem_usage(void);
 
 // swtch.S
 void            swtch(struct context**, struct context*);

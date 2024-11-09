@@ -29,6 +29,7 @@ int calls(void);
 int get_process_type(int);
 int wait_pid(int);
 int unwait_pid(void);
+int mem_usage(int);
 
 // ulib.c
 int stat(const char*, struct stat*);
