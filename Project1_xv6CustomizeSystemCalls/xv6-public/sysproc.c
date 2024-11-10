@@ -121,3 +121,11 @@ int sys_unwait_pid(void){
 int sys_mem_usage(void){
   return mem_usage();
 }
+
+int sys_get_priority(void){
+  return get_priority();
+}
+
+int sys_set_priority(void){
+  return set_priority();
+}

@@ -30,6 +30,8 @@ int get_process_type(int);
 int wait_pid(int);
 int unwait_pid(void);
 int mem_usage(int);
+int get_priority(int);
+int set_priority(int, int);
 
 // ulib.c
 int stat(const char*, struct stat*);
