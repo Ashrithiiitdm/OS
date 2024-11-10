@@ -1,63 +1,104 @@
 #include<stdio.h>
-#include<dirent.h>
-#include<string.h>
 #include<stdlib.h>
-#include<stdbool.h>
+#include<string.h>
+#include<dirent.h>
 #include<sys/stat.h>
+#include<unistd.h>
+#define N 4096
 
-
-void remove_directory(const char *path){
-    
-    DIR *ptr = opendir(path);
-    if(ptr == NULL){
-        printf("rm: Error opening directory\n");
+// Function to delete files
+void delete_file(const char *path){
+    if(remove(path) == -1){
+        printf("custom_rm: cannot remove '%s': No such file or directory\n", path);
         return;
     }
 
-    struct dirent *dir;
-    struct stat entry_stat;
-    char entry_path[4096];
-
-    while((dir = readdir(ptr)) != NULL){
-
-        if(!strcmp(dir->d_name, ".") || !strcmp(dir->d_name, "..")){
-            continue;
-        }
-
-        snprintf(entry_path, sizeof(entry_path), "%s/%s", path, dir->d_name);
-
-        if(stat(entry_path, &entry_stat) == -1){
-            printf("rm: Error getting file status\n");
-            continue;
-        }
-
-        if(S_ISDIR(entry_stat.st_mode)){
-            remove_directory(entry_path);
-        } 
-        else if(unlink(entry_path) == -1){
-            printf("rm: Error deleting file\n");
-        }
-    }
-
-    closedir(ptr);
-
-    if(rmdir(path) == -1){
-        printf("rm: Error deleting directory\n");
-    }
+    printf("Removed file: '%s'\n", path);
 }
 
+// Function to remove directories recursively
+void remove_directory(const char *path){
+    DIR *dir = opendir(path);
+    if(dir == NULL){
+        printf("custom_rm: cannot remove '%s': No such file or directory\n", path);
+        return;
+    }
+
+    struct dirent *entry;
+    struct stat entry_stat;
+    char full_path[N];
+
+    // Iterate over the directory entries
+    while((entry = readdir(dir)) != NULL){
+
+        if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0) {
+            continue;
+        }
+
+        // Constructing the full path of the entry
+        snprintf(full_path, sizeof(full_path), "%s/%s", path, entry->d_name);
+
+        // Get the entry's stats.
+        if (stat(full_path, &entry_stat) == -1) {
+            printf("Error getting stat of '%s'\n", full_path);
+            continue;
+        }
+
+        // If it is a directory call the function recursively.
+        if(S_ISDIR(entry_stat.st_mode)){
+            remove_directory(full_path);
+        } 
+
+        //Else delete the file using delete_file function
+        else if(S_ISREG(entry_stat.st_mode)){
+            // Delete regular files
+            delete_file(full_path);
+        }
+    }
+
+    // Close the directory stream
+    closedir(dir);
+
+    // Remove the directory itself after its contents are deleted
+    if(rmdir(path) == -1){
+        printf("custom_rm: cannot remove '%s': No such file or directory\n", path);
+        return;
+    }
+
+    printf("Removed directory: '%s'\n", path);
+}
+
+// Main function to handle the delete operation
 int main(int argc, char *argv[]){
 
-    char *path;
-
-    if(argc > 1){
-        path = argv[1];
+    if(argc < 2){
+        printf("Usage: custom_rm <file_or_directory>\n");
+        return 1;
     }
+
+    struct stat entry_stat;
+
+    // Check the file or directory status
+    if(stat(argv[1], &entry_stat) == -1){
+        printf("custom_rm: cannot remove '%s': No such file or directory\n", argv[1]);
+        return 1;
+    }
+
+    // If the entry is a directory, recursively remove it
+    if(S_ISDIR(entry_stat.st_mode)){
+        remove_directory(argv[1]);
+    } 
+
+    // If the entry is a regular file, remove it
+    else if(S_ISREG(entry_stat.st_mode)){
+        delete_file(argv[1]);
+    }
+
     else{
-        path = ".";
+        // If the entry is neither a regular file nor a directory
+        printf("custom_rm: cannot remove '%s': Not a file or directory\n", argv[1]);
+        return 1;
     }
-
-    remove_directory(path);
 
     return 0;
 }

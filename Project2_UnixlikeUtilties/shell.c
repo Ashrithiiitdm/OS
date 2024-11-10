@@ -9,7 +9,7 @@ int main() {
     char command[256];
 
     while (1) {
-        printf("ashrith> ");
+        printf("shell> ");
         if (!fgets(command, sizeof(command), stdin)) break; // Exit on EOF
 
         command[strcspn(command, "\n")] = 0; // Remove newline character

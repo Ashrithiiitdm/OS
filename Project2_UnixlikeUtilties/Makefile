@@ -2,7 +2,7 @@
 
 CC = gcc
 CFLAGS = -Wall
-TARGETS = custom_ls custom_wc custom_cp custom_rm empty ashrith
+TARGETS = custom_ls custom_wc custom_cp custom_rm empty shell custom_cat
 INSTALL_DIR = /usr/local/bin
 
 all: $(TARGETS)
@@ -16,6 +16,9 @@ custom_wc: custom_wc.c
 custom_cp: custom_cp.c
 	$(CC) $(CFLAGS) -o custom_cp custom_cp.c
 
+custom_cat: custom_cat.c
+	$(CC) $(CFLAGS) -o custom_cat custom_cat.c
+
 custom_rm: custom_rm.c
 	$(CC) $(CFLAGS) -o custom_rm custom_rm.c
 
@@ -23,11 +26,11 @@ empty: empty.c
 	$(CC) $(CFLAGS) -o empty empty.c
 
 ashrith: shell.c
-	$(CC) $(CFLAGS) -o ashrith shell.c
+	$(CC) $(CFLAGS) -o shell shell.c
 
 # Rule to install the custom_ls program to /usr/local/bin
 install: $(TARGETS)
-	sudo cp $(TARGETS) $(INSTALL_DIR)
+	sudo mv $(TARGETS) $(INSTALL_DIR)
 
 # Rule to clean up compiled files
 clean:

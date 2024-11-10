@@ -15,14 +15,14 @@ void copy_file(const char *src, const char *dest){
 
     source = fopen(src, "r");
     if(source == NULL){
-        printf("cp: Error opening source file\n");
+        printf("custom_cp: Error opening source file\n");
         return;
     }
 
     destination = fopen(dest, "w");
     if(destination == NULL){
 
-        printf("cp: Error opening destination file\n");
+        printf("custom_cp: Error opening destination file\n");
         fclose(source);
         return;
     }
@@ -40,7 +40,7 @@ void copy_directory(const char *src, const char *dest){
 
     DIR *dir = opendir(src);
     if(dir == NULL){
-        printf("cp: Error opening source directory\n");
+        printf("custom_cp: Error opening source directory\n");
         return;
     }
 
@@ -49,14 +49,14 @@ void copy_directory(const char *src, const char *dest){
     if(stat(dest, &st) == -1){
         if(mkdir(dest, 0755) == -1){
 
-            printf("cp: Error creating destination directory\n");
+            printf("custom_cp: Error creating destination directory\n");
             closedir(dir);
             return;
         }
     } 
     else if (!S_ISDIR(st.st_mode)){
 
-        printf("cp: Destination is not a directory\n");
+        printf("custom_cp: Destination is not a directory\n");
         closedir(dir);
         return;
     }
@@ -78,7 +78,7 @@ void copy_directory(const char *src, const char *dest){
 
         // Get the file status
         if(stat(src_path, &entry_stat) == -1){
-            printf("cp: Error getting file status\n");
+            printf("custom_cp: Error getting file status\n");
             continue;
         }
 
@@ -99,14 +99,14 @@ int main(int argc, char *argv[]){
 
     if(argc < 3){
 
-        printf("Usage: cp <source> <destination>\n");
+        printf("Usage: custom_cp <source> <destination>\n");
         return 1;
     }
 
     struct stat src_stat, dest_stat;
     if(stat(argv[1], &src_stat) == -1){
 
-        printf("cp: Cannot stat source");
+        printf("custom_cp: Cannot stat source");
         return 1;
     }
 
@@ -118,7 +118,7 @@ int main(int argc, char *argv[]){
 
             // If destination does not exist, create one
             if(mkdir(argv[2], 0755) == -1){
-                printf("cp: Cannot create destination directory\n");
+                printf("custom_cp: Cannot create destination directory\n");
                 return 1;
             }
         } 
@@ -126,7 +126,7 @@ int main(int argc, char *argv[]){
         else if(!S_ISDIR(dest_stat.st_mode)){
 
             // If destination exists but is not a directory
-            printf("cp: Destination is not a directory\n");
+            printf("custom_cp: Destination is not a directory\n");
             return 1;
         }
 
@@ -174,7 +174,7 @@ int main(int argc, char *argv[]){
 
     else{
         // Source is neither a regular file nor a directory
-        printf("cp: Source is neither a file nor a directory\n");
+        printf("custom_cp: Source is neither a file nor a directory\n");
         return 1;
     }
 

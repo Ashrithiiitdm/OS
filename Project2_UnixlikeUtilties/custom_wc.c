@@ -5,16 +5,16 @@
 
 char buff[N];
 
-void words_characters(FILE *fptr, int arr[]) {
+void words_characters(FILE *fptr, int arr[]){
     int words = 0;
     int characters = 0;
     int lines = 0;
 
-    while (fgets(buff, N, fptr) != NULL) {
+    while(fgets(buff, N, fptr) != NULL){
         lines++;
         characters += strlen(buff);
-        for (int i = 0; i < strlen(buff); i++) {
-            if (buff[i] == ' ' || buff[i] == '\n' || buff[i] == '\t') {
+        for(int i = 0; i < strlen(buff); i++){
+            if (buff[i] == ' ' || buff[i] == '\n' || buff[i] == '\t'){
                 words++;
             }
         }
@@ -24,14 +24,14 @@ void words_characters(FILE *fptr, int arr[]) {
     arr[2] = characters;
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[]){
     FILE *fptr;
     int count_arr[3];
     int total_words = 0;
     int total_characters = 0;
     int total_lines = 0;
 
-    if (argc == 1) {
+    if(argc == 1){
         //Help instructions.
         printf("Usage: custom_wc <filename> [<filename2> ...]\n");
         return 1;
@@ -41,9 +41,9 @@ int main(int argc, char *argv[]) {
     printf("| File              | Lines  | Words  | Characters |\n");
     printf("+-------------------+--------+--------+------------+\n");
 
-    for (int i = 1; i < argc; i++) {
+    for(int i = 1; i < argc; i++){
         fptr = fopen(argv[i], "r");
-        if (fptr == NULL) {
+        if(fptr == NULL){
             printf("| %-17s | %6s | %6s | %10s |\n", argv[i], "Error", "Error", "Error");
             continue;
         }
