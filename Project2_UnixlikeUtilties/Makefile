@@ -2,7 +2,7 @@
 
 CC = gcc
 CFLAGS = -Wall
-TARGETS = custom_ls custom_wc custom_cp custom_rm empty shell custom_cat
+TARGETS = custom_ls custom_wc custom_cp custom_rm empty shell custom_cat custom_mv
 INSTALL_DIR = /usr/local/bin
 
 all: $(TARGETS)
@@ -21,6 +21,9 @@ custom_cat: custom_cat.c
 
 custom_rm: custom_rm.c
 	$(CC) $(CFLAGS) -o custom_rm custom_rm.c
+
+custom_mv: custom_mv.c
+	$(CC) $(CFLAGS) -o custom_mv custom_mv.c
 
 empty: empty.c
 	$(CC) $(CFLAGS) -o empty empty.c
