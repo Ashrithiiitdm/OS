@@ -5,12 +5,12 @@ _memusage:     file format elf32-i386
 Disassembly of section .text:
 
 00000000 <main>:
+#include "types.h"
+#include "stat.h"
 #include "user.h"
 #include "fcntl.h"
 
-int
-main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]){
    0:	8d 4c 24 04          	lea    0x4(%esp),%ecx
    4:	83 e4 f0             	and    $0xfffffff0,%esp
    7:	ff 71 fc             	push   -0x4(%ecx)
@@ -23,7 +23,7 @@ main(int argc, char *argv[])
 
     if(argc != 2) {
    f:	83 39 02             	cmpl   $0x2,(%ecx)
-{
+int main(int argc, char *argv[]){
   12:	8b 41 04             	mov    0x4(%ecx),%eax
     if(argc != 2) {
   15:	74 13                	je     2a <main+0x2a>
@@ -37,11 +37,13 @@ main(int argc, char *argv[])
   25:	e8 b9 02 00 00       	call   2e3 <exit>
     }
 
+    //Get the PID from the command line argument
     pid = atoi(argv[1]);
   2a:	83 ec 0c             	sub    $0xc,%esp
   2d:	ff 70 04             	push   0x4(%eax)
   30:	e8 3b 02 00 00       	call   270 <atoi>
     
+
     if(pid < 0) {
   35:	83 c4 10             	add    $0x10,%esp
     pid = atoi(argv[1]);
@@ -53,16 +55,20 @@ main(int argc, char *argv[])
         exit();
     }
 
+    //Get the memory info using mem_usage system call
     mem = mem_usage(pid);
   3e:	83 ec 0c             	sub    $0xc,%esp
   41:	50                   	push   %eax
   42:	e8 64 03 00 00       	call   3ab <mem_usage>
-    if(mem < 0) {
+
+    if(mem < 0){
   47:	83 c4 10             	add    $0x10,%esp
   4a:	85 c0                	test   %eax,%eax
   4c:	78 16                	js     64 <main+0x64>
         printf(2, "Process %d not found or unable to access memory info\n", pid);
-    } else {
+    } 
+
+    else{
         printf(1, "Memory usage of process %d: %d bytes\n", pid, mem);
   4e:	50                   	push   %eax
   4f:	53                   	push   %ebx

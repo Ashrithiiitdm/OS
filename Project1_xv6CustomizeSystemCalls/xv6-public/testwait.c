@@ -13,6 +13,7 @@ int main()
   int pid1 = -1;
   if(pid == 0){  
     // Child process
+    sleep(5);
     pid1 = getpid();
     printf(1, "Child: Going to sleep for a while...\n");
     sleep(100);
