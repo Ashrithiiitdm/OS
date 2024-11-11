@@ -81,7 +81,7 @@ void list_directories(const char *path){
             printf(GREEN "%s\n" RESET, dir->d_name);
         }
         else if(hasNopermissions(fpath)){
-            printf(RED "%s\n" RESET, dir->d_name);
+            printf(GREEN "%s\n" RESET, dir->d_name);
         }
         else{
             printf("%s\n", dir->d_name);
