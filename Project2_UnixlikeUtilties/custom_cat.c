@@ -1,6 +1,9 @@
 #include<stdio.h>
 #include<stdlib.h>
 
+#define RED "\x1b[31m"
+#define RESET "\x1b[0m"
+
 void cat_show(const char *file){
     FILE *fptr = fopen(file, "r");
     if(fptr == NULL){
@@ -12,7 +15,7 @@ void cat_show(const char *file){
     int line_num = 1;
 
     //Printing the first line number.
-    printf("%6d ", line_num);
+    printf(RED "%d " RESET, line_num);
 
     //Read character by character and display it.
     while((ch = fgetc(fptr)) != EOF){
@@ -21,10 +24,12 @@ void cat_show(const char *file){
         //For new line, printing the line number.
         if(ch == '\n' && !feof(fptr)){
             line_num++;
-            printf("%6d ", line_num);
+            printf(RED "%d " RESET, line_num);
         }
 
     }
+
+    printf("\n");
 
     //Close the file after displaying the contents.
     fclose(fptr);

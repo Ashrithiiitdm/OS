@@ -94,6 +94,8 @@ int main(int argc, char *argv[]) {
 
     if (!match_found) {
         printf("No matches found.\n");
+    }else{
+        printf("\n");
     }
 
     fclose(file);
