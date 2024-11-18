@@ -2,7 +2,7 @@
 
 CC = gcc
 CFLAGS = -Wall
-TARGETS = custom_ls custom_wc custom_cp custom_rm empty shell custom_cat custom_mv
+TARGETS = custom_ls custom_wc custom_cp custom_rm empty shell custom_cat custom_mv custom_grep
 INSTALL_DIR = /usr/local/bin
 
 all: $(TARGETS)
@@ -30,6 +30,9 @@ empty: empty.c
 
 ashrith: shell.c
 	$(CC) $(CFLAGS) -o shell shell.c
+
+custom_grep: custom_grep.c
+	$(CC) $(CFLAGS) -o custom_grep custom_grep.c
 
 # Rule to install the custom_ls program to /usr/local/bin
 install: $(TARGETS)

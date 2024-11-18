@@ -34,5 +34,4 @@ void execute_command(char *command) {
 
    // This is a placeholder implementation.
 //    printf("Executing: %s\n", command);
-   // Add logic to call corresponding utility functions based on command input.
 }
