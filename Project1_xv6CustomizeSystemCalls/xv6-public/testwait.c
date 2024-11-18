@@ -20,7 +20,10 @@ int main()
 
     printf(1, "Child: Waking up and calling unwait\n");
     // Wake up any waiting processes
-    unwait_pid();    
+    int flag = unwait_pid(pid1);
+    if(!flag){
+      printf(1, "Unwait successful\n");
+    }    
     exit();
   } 
   else{        
