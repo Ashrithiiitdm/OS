@@ -28,3 +28,7 @@
 #define SYS_mem_usage 27
 #define SYS_get_priority 28
 #define SYS_set_priority 29
+#define SYS_walktalk_create 30
+#define SYS_walktalk_write  31
+#define SYS_walktalk_read   32
+#define SYS_walktalk_close  33

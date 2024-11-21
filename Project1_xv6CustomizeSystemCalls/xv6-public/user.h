@@ -33,6 +33,12 @@ int mem_usage(int);
 int get_priority(int);
 int set_priority(int, int);
 
+// Walkie talkie system calls
+int walktalk_create(void);
+int walktalk_write(int walkid, const char* buf, int len);
+int walktalk_read(int walkid, char* buf, int len);
+int walktalk_close(int walkid);
+
 // ulib.c
 int stat(const char*, struct stat*);
 char* strcpy(char*, const char*);
