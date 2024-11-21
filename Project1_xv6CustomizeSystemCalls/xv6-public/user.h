@@ -28,7 +28,7 @@ int cps(void);
 int calls(void);
 int get_process_type(int);
 int wait_pid(int);
-int unwait_pid(void);
+int unwait_pid(int);
 int mem_usage(int);
 int get_priority(int);
 int set_priority(int, int);

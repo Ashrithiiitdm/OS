@@ -662,7 +662,7 @@ int wait_pid(void){
   cprintf("wait_pid: Process %d waiting for pid %d\n", currproc->pid, pid);
   
   // Sleep until the target process finishes or is unwaited
-  while (currproc->wait_state == 1) {
+  while(currproc->wait_state == 1) {
       cprintf("wait_pid: Process %d is sleeping\n", currproc->pid);
       sleep(currproc, &ptable.lock);
   }
@@ -685,36 +685,38 @@ int wait_pid(void){
 int unwait_pid(void){
   int pid;
   struct proc *p;
-  struct proc *currproc = myproc();
-  int woken = 0;
-  
-  if (argint(0, &pid) < 0) {
-      return -1;
+  //struct proc *curr = myproc();
+
+  int woke = 0;
+
+  //Getting pid for the system call from arguments.
+  if(argint(0, &pid) <  0){
+    return -1;
   }
-  
+
+  //Acquiring lock for accessing the ptable.
   acquire(&ptable.lock);
-  cprintf("unwait_pid: Process %d releasing waiters\n", currproc->pid);
-  
-  // Wake up the processes waiting for the current process (currproc)
-  for (p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
-      //cprintf("unwait_pid: Checking process %d, waiting_for: %d, currproc pid: %d\n", 
-        //      p->pid, p->waiting_for, currproc->pid);
+
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+    if(p->state == SLEEPING && p->waiting_for == pid){
+
+      //Reset the waiting state.
+      p->wait_state = 0;
+      p->waiting_for = -1;
       
-      if (p->state == SLEEPING && 
-          p->waiting_for == currproc->pid && 
-          (pid == -1 || p->pid == pid)) {
-          
-          p->wait_state = 0;
-          p->waiting_for = -1;
-          wakeup(p);  // Wake up the parent process
-          woken++;
-          cprintf("unwait_pid: Woke up process %d\n", p->pid);
+      //Waking up the sleeping process.
+      wakeup(p);
+      woke++;
+
+      if(pid != -1){
+        break;
       }
+    }
   }
-  
   release(&ptable.lock);
-  cprintf("unwait_pid: Released %d waiting processes\n", woken);
-  return woken;
+
+  return woke;
+
 }
 
 int mem_usage(void){
