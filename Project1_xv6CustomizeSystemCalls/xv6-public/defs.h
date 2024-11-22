@@ -101,6 +101,7 @@ void            pipeclose(struct pipe*, int);
 int             piperead(struct pipe*, char*, int);
 int             pipewrite(struct pipe*, char*, int);
 
+
 //PAGEBREAK: 16
 // proc.c
 int             cpuid(void);
@@ -123,11 +124,16 @@ void            yield(void);
 int  		    cps(void);
 int             calls(void);
 int             get_process_type(void);
+int             getppid(void);
 int             wait_pid(void);
 int             unwait_pid(void);
 int             mem_usage(void);
 int             get_priority(void);
 int             set_priority(void);
+int             sem_init(int, int);
+int             sem_destroy(int);
+int             sem_wait(int, int);
+int             sem_signal(int, int);
 
 // swtch.S
 void            swtch(struct context**, struct context*);
@@ -163,6 +169,9 @@ int             argstr(int, char**);
 int             fetchint(uint, int*);
 int             fetchstr(uint, char**);
 void            syscall(void);
+
+//sysfile.c
+int fdalloc(struct file *f);
 
 // timer.c
 void            timerinit(void);

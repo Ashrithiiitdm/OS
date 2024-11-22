@@ -7,6 +7,7 @@
 #include "mmu.h"
 #include "proc.h"
 #include "spinlock.h"
+// #include "file.h"
 
 int total_calls = -1;
 
@@ -110,6 +111,10 @@ int sys_get_process_type(void){
   return get_process_type();
 }
 
+int sys_getppid(void){
+  return getppid();
+}
+
 int sys_wait_pid(void){
   return wait_pid();
 }
@@ -128,4 +133,55 @@ int sys_get_priority(void){
 
 int sys_set_priority(void){
   return set_priority();
+}
+
+int 
+sys_sem_init(void)
+{
+  int sem;
+  int value;
+
+  if (argint(0, &sem) < 0) 
+    return -1;
+  if (argint(1, &value) < 0)
+    return -1;
+
+  return sem_init(sem, value);
+}
+
+int
+sys_sem_destroy(void)
+{
+  int sem;
+
+  if (argint(0, &sem) < 0)
+    return -1;
+
+  return sem_destroy(sem);
+}
+
+int sys_sem_wait(void)
+{
+  int sem;
+  int count;
+
+  if (argint(0, &sem) < 0)
+    return -1;
+  if (argint(1, &count) < 0)
+    return -1;
+
+  return sem_wait(sem, count);
+}
+
+int sys_sem_signal(void)
+{
+  int sem;
+  int count;
+
+  if (argint(0, &sem) < 0)
+    return -1;
+  if (argint(1, &count) < 0)
+    return -1;
+
+  return sem_signal(sem, count);
 }

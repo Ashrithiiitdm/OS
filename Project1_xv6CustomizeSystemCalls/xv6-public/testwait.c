@@ -13,24 +13,29 @@ int main()
   int pid1 = -1;
   if(pid == 0){  
     // Child process
-    sleep(5);
-    pid1 = getpid();
+
+    printf(1, "Child process...\n");
+    
+    int cpid = getpid();    
+    pid1 = getppid(cpid);
+
+    wait_pid(pid1);
+    
     printf(1, "Child: Going to sleep for a while...\n");
-    sleep(100);
+    
+    unwait_pid(pid1);
+
+    sleep(1000);
 
     printf(1, "Child: Waking up and calling unwait\n");
     // Wake up any waiting processes
-    int flag = unwait_pid(pid1);
-    if(!flag){
-      printf(1, "Unwait successful\n");
-    }    
+    
     exit();
   } 
   else{        
     // Parent process
+    sleep(1000);
     printf(1, "Parent: Waiting for child with pid %d\n", pid);
-    if(pid1 != -1)
-    wait_pid(pid1); // Wait for specific process
     
     printf(1, "Parent: Child has called unwait\n");
     // Wait for child to exit

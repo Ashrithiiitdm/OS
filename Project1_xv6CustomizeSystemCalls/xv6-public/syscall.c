@@ -107,11 +107,16 @@ extern int sys_cps(void);
 extern int sys_calls(void);
 extern int total_calls;
 extern int sys_get_process_type(void);
+extern int sys_getppid(void);
 extern int sys_wait_pid(void);
 extern int sys_unwait_pid(void);
 extern int sys_mem_usage(void);
 extern int sys_get_priority(void);
 extern int sys_set_priority(void);
+extern int sys_sem_init(void);
+extern int sys_sem_destroy(void);
+extern int sys_sem_wait(void);
+extern int sys_sem_signal(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -142,7 +147,12 @@ static int (*syscalls[])(void) = {
 [SYS_unwait_pid] sys_unwait_pid,
 [SYS_mem_usage] sys_mem_usage,
 [SYS_get_priority] sys_get_priority,
-[SYS_set_priority] sys_set_priority
+[SYS_set_priority] sys_set_priority,
+[SYS_sem_init] sys_sem_init,
+[SYS_sem_destroy] sys_sem_destroy,
+[SYS_sem_wait] sys_sem_wait,
+[SYS_sem_signal] sys_sem_signal,
+[SYS_getppid] sys_getppid,
 };
 
 void

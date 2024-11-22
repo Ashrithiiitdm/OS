@@ -27,17 +27,16 @@ int uptime(void);
 int cps(void);
 int calls(void);
 int get_process_type(int);
+int getppid(int);
 int wait_pid(int);
 int unwait_pid(int);
 int mem_usage(int);
 int get_priority(int);
 int set_priority(int, int);
-
-// Walkie talkie system calls
-int walktalk_create(void);
-int walktalk_write(int walkid, const char* buf, int len);
-int walktalk_read(int walkid, char* buf, int len);
-int walktalk_close(int walkid);
+int sem_init(int sem, int value);
+int sem_destroy(int sem);
+int sem_wait(int sem, int count);
+int sem_signal(int sem, int count);
 
 // ulib.c
 int stat(const char*, struct stat*);

@@ -52,11 +52,11 @@ main(void)
 {
   46:	83 ec 10             	sub    $0x10,%esp
   write(fd, s, strlen(s));
-  49:	68 54 04 00 00       	push   $0x454
+  49:	68 7c 04 00 00       	push   $0x47c
   4e:	e8 5d 01 00 00       	call   1b0 <strlen>
   53:	83 c4 0c             	add    $0xc,%esp
   56:	50                   	push   %eax
-  57:	68 54 04 00 00       	push   $0x454
+  57:	68 7c 04 00 00       	push   $0x47c
   5c:	6a 01                	push   $0x1
   5e:	e8 30 03 00 00       	call   393 <write>
   63:	83 c4 10             	add    $0x10,%esp
@@ -91,11 +91,11 @@ main(void)
   a6:	75 49                	jne    f1 <forktest+0xb1>
   write(fd, s, strlen(s));
   a8:	83 ec 0c             	sub    $0xc,%esp
-  ab:	68 86 04 00 00       	push   $0x486
+  ab:	68 ae 04 00 00       	push   $0x4ae
   b0:	e8 fb 00 00 00       	call   1b0 <strlen>
   b5:	83 c4 0c             	add    $0xc,%esp
   b8:	50                   	push   %eax
-  b9:	68 86 04 00 00       	push   $0x486
+  b9:	68 ae 04 00 00       	push   $0x4ae
   be:	6a 01                	push   $0x1
   c0:	e8 ce 02 00 00       	call   393 <write>
 }
@@ -106,11 +106,11 @@ main(void)
   ca:	e8 a4 02 00 00       	call   373 <exit>
   write(fd, s, strlen(s));
   cf:	83 ec 0c             	sub    $0xc,%esp
-  d2:	68 5f 04 00 00       	push   $0x45f
+  d2:	68 87 04 00 00       	push   $0x487
   d7:	e8 d4 00 00 00       	call   1b0 <strlen>
   dc:	83 c4 0c             	add    $0xc,%esp
   df:	50                   	push   %eax
-  e0:	68 5f 04 00 00       	push   $0x45f
+  e0:	68 87 04 00 00       	push   $0x487
   e5:	6a 01                	push   $0x1
   e7:	e8 a7 02 00 00       	call   393 <write>
       exit();
@@ -118,7 +118,7 @@ main(void)
     printf(1, "wait got too many\n");
   f1:	52                   	push   %edx
   f2:	52                   	push   %edx
-  f3:	68 73 04 00 00       	push   $0x473
+  f3:	68 9b 04 00 00       	push   $0x49b
   f8:	6a 01                	push   $0x1
   fa:	e8 11 ff ff ff       	call   10 <printf>
     exit();
@@ -126,7 +126,7 @@ main(void)
     printf(1, "fork claimed to work N times!\n", N);
  104:	50                   	push   %eax
  105:	68 e8 03 00 00       	push   $0x3e8
- 10a:	68 94 04 00 00       	push   $0x494
+ 10a:	68 bc 04 00 00       	push   $0x4bc
  10f:	6a 01                	push   $0x1
  111:	e8 fa fe ff ff       	call   10 <printf>
     exit();
@@ -530,146 +530,209 @@ memmove(void *vdst, const void *vsrc, int n)
  36a:	c3                   	ret    
 
 0000036b <fork>:
+  name: \
+    movl $SYS_ ## name, %eax; \
+    int $T_SYSCALL; \
+    ret
+
+SYSCALL(fork)
  36b:	b8 01 00 00 00       	mov    $0x1,%eax
  370:	cd 40                	int    $0x40
  372:	c3                   	ret    
 
 00000373 <exit>:
+SYSCALL(exit)
  373:	b8 02 00 00 00       	mov    $0x2,%eax
  378:	cd 40                	int    $0x40
  37a:	c3                   	ret    
 
 0000037b <wait>:
+SYSCALL(wait)
  37b:	b8 03 00 00 00       	mov    $0x3,%eax
  380:	cd 40                	int    $0x40
  382:	c3                   	ret    
 
 00000383 <pipe>:
+SYSCALL(pipe)
  383:	b8 04 00 00 00       	mov    $0x4,%eax
  388:	cd 40                	int    $0x40
  38a:	c3                   	ret    
 
 0000038b <read>:
+SYSCALL(read)
  38b:	b8 05 00 00 00       	mov    $0x5,%eax
  390:	cd 40                	int    $0x40
  392:	c3                   	ret    
 
 00000393 <write>:
+SYSCALL(write)
  393:	b8 10 00 00 00       	mov    $0x10,%eax
  398:	cd 40                	int    $0x40
  39a:	c3                   	ret    
 
 0000039b <close>:
+SYSCALL(close)
  39b:	b8 15 00 00 00       	mov    $0x15,%eax
  3a0:	cd 40                	int    $0x40
  3a2:	c3                   	ret    
 
 000003a3 <kill>:
+SYSCALL(kill)
  3a3:	b8 06 00 00 00       	mov    $0x6,%eax
  3a8:	cd 40                	int    $0x40
  3aa:	c3                   	ret    
 
 000003ab <exec>:
+SYSCALL(exec)
  3ab:	b8 07 00 00 00       	mov    $0x7,%eax
  3b0:	cd 40                	int    $0x40
  3b2:	c3                   	ret    
 
 000003b3 <open>:
+SYSCALL(open)
  3b3:	b8 0f 00 00 00       	mov    $0xf,%eax
  3b8:	cd 40                	int    $0x40
  3ba:	c3                   	ret    
 
 000003bb <mknod>:
+SYSCALL(mknod)
  3bb:	b8 11 00 00 00       	mov    $0x11,%eax
  3c0:	cd 40                	int    $0x40
  3c2:	c3                   	ret    
 
 000003c3 <unlink>:
+SYSCALL(unlink)
  3c3:	b8 12 00 00 00       	mov    $0x12,%eax
  3c8:	cd 40                	int    $0x40
  3ca:	c3                   	ret    
 
 000003cb <fstat>:
+SYSCALL(fstat)
  3cb:	b8 08 00 00 00       	mov    $0x8,%eax
  3d0:	cd 40                	int    $0x40
  3d2:	c3                   	ret    
 
 000003d3 <link>:
+SYSCALL(link)
  3d3:	b8 13 00 00 00       	mov    $0x13,%eax
  3d8:	cd 40                	int    $0x40
  3da:	c3                   	ret    
 
 000003db <mkdir>:
+SYSCALL(mkdir)
  3db:	b8 14 00 00 00       	mov    $0x14,%eax
  3e0:	cd 40                	int    $0x40
  3e2:	c3                   	ret    
 
 000003e3 <chdir>:
+SYSCALL(chdir)
  3e3:	b8 09 00 00 00       	mov    $0x9,%eax
  3e8:	cd 40                	int    $0x40
  3ea:	c3                   	ret    
 
 000003eb <dup>:
+SYSCALL(dup)
  3eb:	b8 0a 00 00 00       	mov    $0xa,%eax
  3f0:	cd 40                	int    $0x40
  3f2:	c3                   	ret    
 
 000003f3 <getpid>:
+SYSCALL(getpid)
  3f3:	b8 0b 00 00 00       	mov    $0xb,%eax
  3f8:	cd 40                	int    $0x40
  3fa:	c3                   	ret    
 
 000003fb <sbrk>:
+SYSCALL(sbrk)
  3fb:	b8 0c 00 00 00       	mov    $0xc,%eax
  400:	cd 40                	int    $0x40
  402:	c3                   	ret    
 
 00000403 <sleep>:
+SYSCALL(sleep)
  403:	b8 0d 00 00 00       	mov    $0xd,%eax
  408:	cd 40                	int    $0x40
  40a:	c3                   	ret    
 
 0000040b <uptime>:
+SYSCALL(uptime)
  40b:	b8 0e 00 00 00       	mov    $0xe,%eax
  410:	cd 40                	int    $0x40
  412:	c3                   	ret    
 
 00000413 <cps>:
+SYSCALL(cps)
  413:	b8 16 00 00 00       	mov    $0x16,%eax
  418:	cd 40                	int    $0x40
  41a:	c3                   	ret    
 
 0000041b <calls>:
+SYSCALL(calls)
  41b:	b8 17 00 00 00       	mov    $0x17,%eax
  420:	cd 40                	int    $0x40
  422:	c3                   	ret    
 
 00000423 <get_process_type>:
+SYSCALL(get_process_type)
  423:	b8 18 00 00 00       	mov    $0x18,%eax
  428:	cd 40                	int    $0x40
  42a:	c3                   	ret    
 
 0000042b <wait_pid>:
+SYSCALL(wait_pid)
  42b:	b8 19 00 00 00       	mov    $0x19,%eax
  430:	cd 40                	int    $0x40
  432:	c3                   	ret    
 
 00000433 <unwait_pid>:
+SYSCALL(unwait_pid)
  433:	b8 1a 00 00 00       	mov    $0x1a,%eax
  438:	cd 40                	int    $0x40
  43a:	c3                   	ret    
 
 0000043b <mem_usage>:
+SYSCALL(mem_usage)
  43b:	b8 1b 00 00 00       	mov    $0x1b,%eax
  440:	cd 40                	int    $0x40
  442:	c3                   	ret    
 
 00000443 <get_priority>:
+SYSCALL(get_priority)
  443:	b8 1c 00 00 00       	mov    $0x1c,%eax
  448:	cd 40                	int    $0x40
  44a:	c3                   	ret    
 
 0000044b <set_priority>:
+SYSCALL(set_priority)
  44b:	b8 1d 00 00 00       	mov    $0x1d,%eax
  450:	cd 40                	int    $0x40
  452:	c3                   	ret    
+
+00000453 <sem_init>:
+SYSCALL(sem_init)
+ 453:	b8 1e 00 00 00       	mov    $0x1e,%eax
+ 458:	cd 40                	int    $0x40
+ 45a:	c3                   	ret    
+
+0000045b <sem_destroy>:
+SYSCALL(sem_destroy)
+ 45b:	b8 1f 00 00 00       	mov    $0x1f,%eax
+ 460:	cd 40                	int    $0x40
+ 462:	c3                   	ret    
+
+00000463 <sem_wait>:
+SYSCALL(sem_wait)
+ 463:	b8 20 00 00 00       	mov    $0x20,%eax
+ 468:	cd 40                	int    $0x40
+ 46a:	c3                   	ret    
+
+0000046b <sem_signal>:
+SYSCALL(sem_signal)
+ 46b:	b8 21 00 00 00       	mov    $0x21,%eax
+ 470:	cd 40                	int    $0x40
+ 472:	c3                   	ret    
+
+00000473 <getppid>:
+ 473:	b8 22 00 00 00       	mov    $0x22,%eax
+ 478:	cd 40                	int    $0x40
+ 47a:	c3                   	ret    
