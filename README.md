@@ -1,6 +1,9 @@
 # Question-1 Adding/Modfying System Calls in xv6 operating system
+
 The documentation for this question is present in docs.pdf in the main repository.
+
 # Question-2 Unix like utilities from scratch
+
 The repository Project2_UnixlikeUtilities contains  Unix-like commands implemented from scratch. Each utility is written in C and can be compiled and run on Linux-based operating systems.
 
 ## Getting Started
@@ -36,9 +39,11 @@ cd Project2_UnixlikeUtilities
 ```
 
 Build all the utilities using the provided Makefile by running:
+
 ```bash
 make
 ```
+
 This command will compile all the source files and create executive binaries for the utilities in the folder.
 
 To install the utilities into your local system:
