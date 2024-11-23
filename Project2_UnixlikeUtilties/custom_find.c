@@ -1,4 +1,10 @@
 // Check in all directories whether find is there or not
+// Purpose: Search for files and directories with advanced filtering.
+// Features:
+// -n <name>: Search by name.
+// -e <ext>: Search by file extension.
+// -s <size>: Search by size range.
+// -d <days>: Search by modification time.
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
