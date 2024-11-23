@@ -361,6 +361,12 @@ scheduler(void)
     }
 
     if(high_p!=0){
+      for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+        if(p->state == RUNNING && p->priority < high_p->priority){
+          // Save the state of current running process
+          p->state = RUNNABLE;  // Mark it as RUNNABLE so it can run again later
+        }
+      }
       // Switch to chosen process.  It is the process's job
       // to release ptable.lock and then reacquire it
       // before jumping back to us.
