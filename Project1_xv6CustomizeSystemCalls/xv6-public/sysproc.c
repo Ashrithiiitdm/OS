@@ -115,14 +115,6 @@ int sys_getppid(void){
   return getppid();
 }
 
-int sys_wait_pid(void){
-  return wait_pid();
-}
-
-int sys_unwait_pid(void){
-  return unwait_pid();
-}
-
 int sys_mem_usage(void){
   return mem_usage();
 }
