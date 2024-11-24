@@ -11,7 +11,7 @@ int
 main(void)
 {
   int pid, wpid;
-
+  char dummy = ' ';
   if(open("console", O_RDWR) < 0){
     mknod("console", 1, 1);
     open("console", O_RDWR);
@@ -32,6 +32,6 @@ main(void)
       exit();
     }
     while((wpid=wait()) >= 0 && wpid != pid)
-      printf(1, "zombie!\n");
+      printf(1, "%c", dummy);
   }
 }

@@ -2,13 +2,13 @@
 00000000 ulib.c
 00000000 printf.c
 00000440 printint
-000008c8 digits.0
+000008c4 digits.0
 00000000 umalloc.c
-00000b7c freep
-00000b80 base
+00000b78 freep
+00000b7c base
 000000f0 strcpy
 000004f0 printf
-00000b74 argv
+00000b70 argv
 00000310 memmove
 0000038b mknod
 00000210 gets
@@ -32,7 +32,7 @@
 0000033b fork
 000003cb sbrk
 000003db uptime
-00000b7c __bss_start
+00000b78 __bss_start
 000001b0 memset
 00000000 main
 00000433 getppid
@@ -40,8 +40,8 @@
 00000120 strcmp
 000003bb dup
 00000280 stat
-00000b7c _edata
-00000b88 _end
+00000b78 _edata
+00000b84 _end
 0000042b sem_signal
 000003a3 link
 00000343 exit

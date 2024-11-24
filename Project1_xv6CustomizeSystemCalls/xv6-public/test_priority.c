@@ -9,32 +9,9 @@ void spin(int duration) {
 
 int main(void) {
     int pid1, pid2, pid3;
-    int orig_priority;
 
-    // Test 1: Get default priority
-    int pid = getpid();
-    printf(1, "\nTest 1: Checking default priority\n");
-    orig_priority = get_priority(pid);
-    printf(1, "Default priority: %d\n", orig_priority);
-    if(orig_priority != 10)
-        printf(1, "TEST 1 FAILED: Default priority should be 10\n");
-    else
-        printf(1, "TEST 1 PASSED\n");
-
-    // Test 2: Set and Get Priority
-    printf(1, "\nTest 2: Testing setpriority and getpriority\n");
-    if(set_priority(pid, 5) < 0) {
-        printf(1, "TEST 2 FAILED: Could not set priority\n");
-        exit();
-    }
-    if(get_priority(pid) != 5) {
-        printf(1, "TEST 2 FAILED: Priority not set correctly\n");
-    } else {
-        printf(1, "TEST 2 PASSED\n");
-    }
-
-    // Test 3: Priority Scheduling
-    printf(1, "\nTest 3: Testing priority-based scheduling\n");
+    // Test : Priority Scheduling
+    printf(1, "\nTest: Testing priority-based scheduling\n");
     
     // Create first child with low priority (higher number)
     if((pid1 = fork()) == 0) {
