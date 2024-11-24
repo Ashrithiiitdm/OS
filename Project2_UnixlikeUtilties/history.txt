@@ -1,1 +1,18 @@
 custom_ls test_demo
+custom_ls test_demo
+custom_grep
+custom_grep -i -n "i am " demo.txt
+custom_tail
+custom_tail demo2.txt 4
+custom_head demo.txt 2
+custom_hwatch
+custom_tree
+custom_tree test_demo
+custom_find
+custom_find_in_given_folder test_demo custom_cat
+custom_find_in_given_folder -f test_demo -n custom_cat
+custom_find_in_given_folder -f test_demo -n custom_cat.c
+ls
+custom_find_in_given_folder -f test_demo -n demo1.c
+custom_find demo1.c
+empty demo.txt
